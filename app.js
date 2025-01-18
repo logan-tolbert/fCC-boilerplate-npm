@@ -1,4 +1,5 @@
 let express = require('express');
+const req = require('express/lib/request');
 const res = require('express/lib/response');
 require('dotenv').config();
 let app = express();
@@ -11,7 +12,12 @@ const publicDir = __dirname + '/public';
 
 app.use('/public', express.static(publicDir));
 
+app.use((req, res, next)=>{
+    console.log(`${req.method} ${req.path} - ${req.ip}`);
+    next();
+});
 app.get("/", (req,res)=>{
+
     res.sendFile(viewsDir);
 })
 
@@ -21,6 +27,8 @@ app.get("/json", (reg,res)=>{
         {"message": "HELLO JSON"} : {"message": "Hello json"}
     );
 })
+
+
 
 
 
